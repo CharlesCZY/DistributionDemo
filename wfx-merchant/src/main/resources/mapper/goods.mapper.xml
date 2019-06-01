@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.wfxmerchant.mapper.GoodsMapper">
+
+
+
+    <resultMap id="baseResultMap" type="com.qfedu.wfxmerchant.po.WxGoodType">
+        <id property="typeId" column="type_id" javaType="java.lang.String"/>
+        <result property="typeName" column="type_name" javaType="java.lang.String"/>
+        <result property="parentId" column="parent_id" javaType="java.lang.String"/>
+        <result property="typeTag" column="type_tag" javaType="java.lang.String"/>
+        <result property="orderNo" column="order_no" javaType="java.lang.Long"/>
+        <result property="alisaCode" column="alisa_code" javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="goodsResultMap" type="com.qfedu.wfxmerchant.po.WxGoods">
+        <id property="goodId" column="good_id" javaType="java.lang.String"/>
+        <result property="goodName" column="good_name" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+        <result property="toped" column="toped" javaType="java.lang.Long"/>
+        <result property="recomed" column="recomed" javaType="java.lang.Long"/>
+        <result property="skuPrice" column="sku_price" javaType="java.lang.String"/>
+        <result property="skuPmoney" column="sku_pmoney" javaType="java.lang.String"/>
+        <result property="state" column="state" javaType="java.lang.Long"/>
+    </resultMap>
+
+
+    <select id="queryGoodType" resultMap="baseResultMap">
+        select * from wxb_good_type ;
+    </select>
+
+    <insert id="insertGoods">
+        insert into wxb_good(good_id, good_name, customer_id, good_pic, good_pic1, good_pic2,create_time)
+        values (#{goodId},#{goodName},#{customerId},#{goodPic},#{goodPic1},#{goodPic2},#{createTime})
+    </insert>
+
+    <delete id="delGoods">
+        DELETE FROM wxb_good WHERE good_id=#{goodsId}
+    </delete>
+
+    <select id="queryGoods" resultMap="goodsResultMap">
+        SELECT good_id,good_name,create_time,toped,recomed,sku_price,sku_pmoney,state FROM wxb_good WHERE customer_id=#{customerId};
+    </select>
+
+</mapper>

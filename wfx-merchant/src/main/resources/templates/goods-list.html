@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <base th:href="${#request.getContextPath()} + '/'">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>商品上传</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="bs-example" data-example-id="contextual-table">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>商品名称</th>
+            <th>价格</th>
+            <th>分成</th>
+            <th>加入时间</th>
+            <th>推荐</th>
+            <th>置顶</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="success" th:each="goods : ${goods}">
+            <th scope="row" th:text="${goods.goodId}" id="goodId"></th>
+            <td th:text="${goods.goodName}">Column content</td>
+            <td th:text="${goods.skuPrice}">Column content</td>
+            <td th:text="${goods.skuPmoney}">Column content</td>
+            <td th:text="${goods.createTime}">Column content</td>
+            <td th:if="${goods.recomed}==0"><span class="label label-sm label-grey" style="color: red">未推荐</span></td>
+            <td th:if="${goods.recomed}==1"><span class="label label-sm label-grey" style="color: green">已推荐</span></td>
+            <td th:if="${goods.toped}==0"><span class="label label-sm label-primary">未置顶</span></td>
+            <td th:if="${goods.toped}==1"><span class="label label-sm label-primary" style="background-color: green">已置顶</span></td>
+            <td th:if="${goods.state}==0"><span class="label label-sm label-warning">等待审核</span></td>
+            <td th:if="${goods.state}==1"><span class="label label-sm label-warning" style="background-color:green">已上架</span></td>
+            <td th:if="${goods.state}==2"><span class="label label-sm label-warning" style="background-color:red">已下架</span></td>
+            <td class="col-sm-2">
+                <button type="button" class="btn btn-primary" >修改</button>
+                <button type="button" class="btn btn-danger" th:onclick="delgoods([[${goods.goodId}]])">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div><!-- /example -->
+</body>
+<script>
+    function delgoods(id) {
+        $.post("goods/del",{goodId:id},function (data) {
+            if(data.code==1){
+                $("#content").load("goods/list")
+            }else {
+                alert("删除失败")
+            }
+        })
+    }
+</script>
+</html>

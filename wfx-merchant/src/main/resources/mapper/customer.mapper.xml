@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.wfxmerchant.mapper.CustomerMapper">
+
+
+
+    <resultMap id="baseResultMap" type="com.qfedu.wfxmerchant.po.Customers">
+        <id property="customerId" column="customer_id" javaType="java.lang.String"/>
+        <result property="customerName" column="customer_name" javaType="java.lang.String"/>
+        <result property="qq" column="qq" javaType="java.lang.String"/>
+        <result property="wxh" column="wxh" javaType="java.lang.String"/>
+        <result property="phone" column="phone" javaType="java.lang.String"/>
+        <result property="createtime" column="createtime" javaType="java.sql.Timestamp"/>
+        <result property="loginName" column="login_name" javaType="java.lang.String"/>
+        <result property="loginPwd" column="login_pwd" javaType="java.lang.String"/>
+        <result property="state" column="state" javaType="java.lang.Long"/>
+        <result property="level" column="level" javaType="java.lang.Long"/>
+        <result property="accBalance" column="acc_balance" javaType="java.lang.Double"/>
+        <result property="updateTime" column="update_time" javaType="java.sql.Timestamp"/>
+        <result property="website" column="website" javaType="java.lang.String"/>
+    </resultMap>
+
+    <select id="customerLogin" resultMap="baseResultMap">
+        select * from wxb_customer WHERE login_name=#{username} AND login_pwd=#{password};
+    </select>
+
+
+</mapper>
