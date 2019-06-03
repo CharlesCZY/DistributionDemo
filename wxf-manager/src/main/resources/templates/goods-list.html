@@ -50,8 +50,9 @@
             <td th:if="${goods.state}==1"><span class="label label-sm label-warning" style="background-color:green">已上架</span></td>
             <td th:if="${goods.state}==2"><span class="label label-sm label-warning" style="background-color:red">已下架</span></td>
             <td class="col-sm-2">
-                <button type="button" class="btn btn-primary" >修改</button>
-                <button type="button" class="btn btn-danger" th:onclick="delgoods([[${goods.goodId}]])">删除</button>
+                <button type="button" class="btn btn-success dropdown-toggle" th:if="${goods.state}==0" th:onclick="altergoods([[${goods.goodId}]],1)">上架</button>
+                <button type="button" class="btn btn-danger" th:if="${goods.state}==1"th:onclick="altergoods([[${goods.goodId}]],2)">下架</button>
+                <button type="button" class="btn btn-primary dropdown-toggle" th:if="${goods.state}==2"th:onclick="altergoods([[${goods.goodId}]],0)">恢复审核</button>
             </td>
         </tr>
         </tbody>
@@ -59,10 +60,10 @@
 </div><!-- /example -->
 </body>
 <script>
-    function delgoods(id) {
-        $.post("goods/del",{goodId:id},function (data) {
+    function altergoods(id,state) {
+        $.post("goodsAll/updateState",{goodsId:id,state:state},function (data) {
             if(data.code==1){
-                $("#content").load("goods/list")
+                $("#content").load("goodsAll/list")
             }else {
                 alert("删除失败")
             }

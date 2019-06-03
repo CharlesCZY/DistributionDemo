@@ -3,7 +3,9 @@ package com.qfedu.wfxmerchant.mapper;
 
 import com.qfedu.wfxmerchant.po.WxGoodType;
 import com.qfedu.wfxmerchant.po.WxGoods;
+import com.qfedu.wfxmerchant.po.WxbGoodSku;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public interface GoodsMapper {
 
     void insertGoods(WxGoods goods);
 
+    void saveGoodsSku(@Param("skuList")List<WxbGoodSku> sku);
     List<WxGoods> queryGoods(String customerId);
 
     void delGoods(String goodsId);

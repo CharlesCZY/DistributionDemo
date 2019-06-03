@@ -131,7 +131,7 @@
 
 
                             <div style="margin-top:10px">
-                                <button class="btn btn-sm btn-primary">
+                                <button type="button" class="btn btn-sm btn-primary" onclick="addRow('tcbg')">
                                     <i class="icon-save"></i>
                                     增加
                                 </button>
@@ -290,6 +290,16 @@
         })
     };
 
+    function addRow(id) {
+        var tag = "<tr name='sku'>\n" +
+            "    <td align=\"left\" style=\"background-color:#F9F9F9\"><input type=\"text\" name=\"skuName\"></td>\n" +
+            "    <td align=\"left\" style=\"background-color:#F9F9F9\"><input type=\"text\" name=\"skuCost\"></td>\n" +
+            "    <td align=\"left\" style=\"background-color:#F9F9F9\"><input type=\"text\" name=\"skuPrice\"></td>\n" +
+            "    <td align=\"left\" style=\"background-color:#F9F9F9\"><input type=\"text\" name=\"skuPmoney\"></td>\n" +
+            "    <td align=\"left\" style=\"background-color:#F9F9F9\"><input type=\"text\" name=\"serviceMoney\"></td>\n" +
+            "</tr>";
+        $("#"+id).append(tag);
+    };
 
     function submitData() {
 
@@ -312,18 +322,42 @@
             alert("请上传图片3");
         }
 
+        var goodsJson={};
+        goodsJson['goodName']=goodsName;
+        goodsJson['goodPic']=image1URL;
+        goodsJson['goodPic1']=image2URL;
+        goodsJson['goodPic2']=image3URL;
 
-        $.post("goods/save", {
-            goodName: goodsName,
-            goodPic: image1URL,
-            goodPic1: image2URL,
-            goodPic2: image3URL
-        }, function (data) {
-            if (data.code == 1) {
-                alert("新增成功!");
-                $("#content").load("goods/list")
+        var skuArray=[];
+
+
+        $("tr[name='sku']").each(function () {
+            var sku={};
+
+            $(this).find("input").each(function () {
+
+                sku[this.name]=this.value;
+            });
+
+            skuArray.push(sku);
+        });
+
+        goodsJson['skuList']=skuArray;
+
+        $.ajax({
+            url:"goods/save",
+            type:"post",
+            data:JSON.stringify(goodsJson),
+            contentType:"application/json;charset=utf-8",
+            success:function (data) {
+                if (data.code==1){
+                    $("#content").load("goods/list");
+                }else{
+                    alert("增加失败")
+                }
             }
-        })
+
+        });
     }
 
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.distribution.user.mapper.GoodsMapper">
+
+
+
+
+    <resultMap id="goodsResultMap" type="com.qianfeng.distribution.user.po.WxGoods">
+        <id property="goodId" column="good_id" javaType="java.lang.String"/>
+        <result property="goodName" column="good_name" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+        <result property="toped" column="toped" javaType="java.lang.Long"/>
+        <result property="recomed" column="recomed" javaType="java.lang.Long"/>
+        <result property="skuPrice" column="sku_price" javaType="java.lang.String"/>
+        <result property="skuPmoney" column="sku_pmoney" javaType="java.lang.String"/>
+        <result property="state" column="state" javaType="java.lang.Long"/>
+    </resultMap>
+
+
+
+
+    <select id="queryGoods" resultMap="goodsResultMap">
+        SELECT good_id,good_name,create_time,toped,recomed,sku_price,sku_pmoney,state FROM wxb_good ;
+    </select>
+
+    <update id="updateGoodsState">
+        UPDATE wxb_good SET state=#{state} WHERE good_id=#{goodsId}
+    </update>
+
+</mapper>

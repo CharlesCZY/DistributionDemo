@@ -1,4 +1,4 @@
-package com.qfedu.wfxmerchant.po;
+package com.qfedu.vip.po;
 
 
 import lombok.Getter;
@@ -8,12 +8,9 @@ import java.util.List;
 
 @Getter
 @Setter
-public class WxGoods {
+public class Goods {
     private String goodId;
     private String goodName;
-    private java.sql.Timestamp createTime;
-    private long toped;
-    private long recomed;
     private String customerId;
     private String goodPic;
     private String goodPic1;
@@ -30,7 +27,9 @@ public class WxGoods {
     private String typeId;
     private String tags;
     private long state;
-
+    private java.sql.Timestamp createTime;
+    private long toped;
+    private long recomed;
     private java.sql.Timestamp topedTime;
     private java.sql.Timestamp recomedTime;
     private String spcId;
@@ -42,10 +41,7 @@ public class WxGoods {
     private long leixingId;
     private String kfqq;
 
-    private List<WxbGoodSku> skuList;
+    //一对多
+    private List<GoodSku> skuList;
 
-
-    public void getCustomerId(String s) {
-        this.customerId=s;
-    }
 }

@@ -7,14 +7,13 @@ import com.qfedu.wfxmerchant.vo.JsonResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/goods")
@@ -41,12 +40,12 @@ public class GoodsController {
 
     @RequestMapping("save")
     @ResponseBody
-    public JsonResultVo insertGoods(WxGoods goods){
+    public JsonResultVo insertGoods(@RequestBody WxGoods goods){
         JsonResultVo jsonResultVo=new JsonResultVo();
-        goods.setGoodId(UUID.randomUUID().toString());
         goods.getCustomerId("69609206");
         goods.setCreateTime(new Timestamp(new Date().getTime()));
         goodsService.insertGoods(goods);
+
 
         jsonResultVo.setCode(1);
         return jsonResultVo;

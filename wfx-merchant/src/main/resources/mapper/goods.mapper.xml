@@ -36,6 +36,14 @@
         values (#{goodId},#{goodName},#{customerId},#{goodPic},#{goodPic1},#{goodPic2},#{createTime})
     </insert>
 
+    <insert id="saveGoodsSku">
+        insert into wxb_good_sku(sku_id, sku_name, sku_cost, sku_price, sku_pmoney, good_id, order_no,service_money)
+        values
+        <foreach collection="skuList" item="sku" separator=",">
+            (#{sku.skuId},#{sku.skuName},#{sku.skuCost},#{sku.skuPrice},#{sku.skuPmoney},#{sku.goodId},#{sku.orderNo},#{sku.serviceMoney})
+        </foreach>
+    </insert>
+
     <delete id="delGoods">
         DELETE FROM wxb_good WHERE good_id=#{goodsId}
     </delete>

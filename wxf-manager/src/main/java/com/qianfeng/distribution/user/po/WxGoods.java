@@ -1,10 +1,8 @@
-package com.qfedu.wfxmerchant.po;
+package com.qianfeng.distribution.user.po;
 
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -42,7 +40,7 @@ public class WxGoods {
     private long leixingId;
     private String kfqq;
 
-    private List<WxbGoodSku> skuList;
+//    private List<WxbGoodSku> skuList;
 
 
     public void getCustomerId(String s) {
