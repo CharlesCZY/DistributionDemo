@@ -38,7 +38,7 @@
                         <h3 th:text="${goods.goodName}">Thumbnail label</h3>
                         <p th:text="'已购买'+${goods.sellNum}+'次'">...</p>
                         <p>
-                           <button type="button" class="btn btn-success">详情</button>
+                            <a th:href="@{'goods/listSku?goodsId='+${goods.goodId}}">商品详情</a>
                         </p>
                     </div>
                 </div>

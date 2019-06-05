@@ -26,7 +26,7 @@
 
 
     <select id="queryAllGoods" resultMap="goodsResultMap">
-        select * from wxb_good;
+        select * from wxb_good WHERE state=1;
     </select>
 
     <select id="queryGoodsById" resultMap="goodsResultMap">
@@ -34,7 +34,7 @@
     </select>
 
 
-    <select id="querySkuListByGoodsId" resultMap="skuResultMap">
+    <select id="querySkuListByGood" resultMap="skuResultMap">
         select * from wxb_good_sku where good_id=#{goodsId}
     </select>
 

@@ -1,8 +1,13 @@
 package com.qfedu.wfxmerchant.controller;
 
+import com.google.gson.Gson;
+import com.qfedu.wfxmerchant.po.TbImages;
+import com.qfedu.wfxmerchant.service.IImageService;
+import com.qfedu.wfxmerchant.tool.AppTools;
 import com.qfedu.wfxmerchant.vo.JsonResultVo;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +20,9 @@ import java.io.IOException;
 public class UploadController {
     public static final String IMAGE_BASE_URL="http://localhost/images/";
 
+    @Autowired
+    private IImageService imageService;
+
     @RequestMapping("/upload")
     @ResponseBody
     public JsonResultVo uploadGoodsImage(MultipartFile file){
@@ -23,6 +31,19 @@ public class UploadController {
 
 
         try {
+            String md5String= AppTools.formatMD5String(file.getBytes());
+            TbImages images=imageService.queryImageExistByMD5(md5String);
+            if (images!=null){
+                images.setImageType("");
+                images.setFkId("");
+                Integer id2 = imageService.addImages(images);
+                jsonResultVo.setCode(1);
+
+                Gson gson=new Gson();
+                String json=gson.toJson(images);
+                jsonResultVo.setMsg(json);
+                return jsonResultVo;
+            }
             //用来连接FTP服务器的工具类
             FTPClient ftp = new FTPClient();
             //连接FTP服务器，默认端口是21
@@ -52,10 +73,22 @@ public class UploadController {
             ftp.storeFile(fileName, file.getInputStream());
             //退出登录
             ftp.logout();
-            jsonResultVo.setMsg(IMAGE_BASE_URL+fileName);
+
+            TbImages tbImages=new TbImages();
+            tbImages.setImageUrl(IMAGE_BASE_URL+fileName);
+            tbImages.setImageMd5(md5String);
+
+            Integer id=imageService.addImages(tbImages);
+
+
+            jsonResultVo.setMsg("{\"url\":\""+IMAGE_BASE_URL+fileName+"\",\"id\":\""+id+"\"}");
             jsonResultVo.setCode(1);
         } catch (IOException e) {
             e.printStackTrace();
+            jsonResultVo.setCode(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonResultVo.setCode(0);
         }
 
         return jsonResultVo;
