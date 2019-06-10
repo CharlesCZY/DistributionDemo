@@ -79,7 +79,7 @@ public class OrderController {
             //设备IP
             data.put("spbill_create_ip", "123.12.12.123");
             //回调接口（微信支付完之后的通知接口）
-            data.put("notify_url", "http://587ww2.natappfree.cc/order/notify");
+            data.put("notify_url", "http://ebu5qu.natappfree.cc/order/notify");
             //支付模式native或者jsapi
             data.put("trade_type", "NATIVE");  // 此处指定为扫码支付
             //产品ID自定义
