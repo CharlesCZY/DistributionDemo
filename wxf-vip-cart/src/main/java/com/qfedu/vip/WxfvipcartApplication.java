@@ -6,10 +6,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
 @SpringBootApplication
-public class WxfviphfApplication {
+public class WxfvipcartApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WxfviphfApplication.class, args);
+		SpringApplication.run(WxfvipcartApplication.class, args);
 	}
 
 }

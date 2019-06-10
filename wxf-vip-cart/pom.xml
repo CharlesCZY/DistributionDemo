@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.qfedu</groupId>
-	<artifactId>wxf-vip-hf</artifactId>
+	<artifactId>wxf-vip-cart</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>wxf-vip-hf</name>
+	<name>wxf-vip-cart</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -63,11 +63,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-ribbon</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			<artifactId>spring-cloud-starter-ribbon</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.qianfeng.wxpay</groupId>
