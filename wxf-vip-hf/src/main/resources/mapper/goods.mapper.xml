@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qfedu.vip.mapper.GoodsMapper">
+
+
+
+    <resultMap id="goodsResultMap" type="com.qfedu.vip.po.Goods">
+        <id property="goodId" column="good_id"/>
+        <result property="goodName" column="good_name"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="goodPic" column="good_pic"/>
+    </resultMap>
+
+    <resultMap id="skuResultMap" type="com.qfedu.vip.po.GoodSku">
+        <id property="skuId" column="sku_id"/>
+        <result property="skuName" column="sku_name"/>
+        <result property="skuCost" column="sku_cost"/>
+        <result property="skuPrice" column="sku_price"/>
+        <result property="skuPmoney" column="sku_pmoney"/>
+        <result property="goodId" column="good_id"/>
+        <result property="serviceMoney" column="service_money"/>
+    </resultMap>
+
+
+
+    <select id="queryAllGoods" resultMap="goodsResultMap">
+        select * from wxb_good g join wxb_good_type t on g.type_id=t.type_id AND t.type_name='护肤品'WHERE state=1;
+    </select>
+
+    <select id="queryGoodsById" resultMap="goodsResultMap">
+        select * from wxb_good where good_id=#{goodsId};
+    </select>
+
+
+    <select id="querySkuListByGood" resultMap="skuResultMap">
+        select * from wxb_good_sku where good_id=#{goodsId}
+    </select>
+
+</mapper>
