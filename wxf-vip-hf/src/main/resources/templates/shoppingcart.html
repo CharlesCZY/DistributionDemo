@@ -31,7 +31,7 @@
             <div class="panel panel-default" th:each="merchant:${shoppingList}">
                 <!-- Default panel contents -->
                 <div class="panel-heading" th:text="${merchant.merchantName}">Panel heading</div>
-                <form action="order/add" method="post">
+                <form action="http://localhost:8080/order/add" method="post">
                 <!-- Table -->
                 <table class="table">
                     <thead>
