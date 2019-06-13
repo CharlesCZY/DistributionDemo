@@ -14,6 +14,7 @@ import com.qfedu.vip.po.OrderInfo;
 import com.qfedu.vip.service.IOrderService;
 import com.qfedu.vip.vo.GoodsInfo;
 import io.goeasy.GoEasy;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -41,8 +42,12 @@ public class OrderController {
     @Autowired
     private JmsMessagingTemplate jmsMessagingTemplate;
 
+    private Logger logger=Logger.getLogger("支付");
+
     @RequestMapping("/add")
     public String addOrder(GoodsInfo goodsInfo, Model model){
+
+        logger.info("支付");
         try {
             //生成订单号
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");

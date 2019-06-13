@@ -68,9 +68,11 @@
     function addShopping (goodsId) {
         var skuid=$("#sku").val();
 
-        $.post("goods/addshopping",{goodsId:goodsId,sku:skuid},function (data) {
+        $.post("goods/addshopping",{goodsId:goodsId,sku:skuid,token:'61646d696e31323334353631353630333236313632373039'},function (data) {
             if (data.code==1){
                 alert("添加成功")
+            }else{
+                alert("添加失败")
             }
         });
     };

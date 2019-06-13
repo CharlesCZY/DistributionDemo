@@ -1,15 +1,17 @@
-package com.qfedu.vip;
+package com.qianfeng.demo19_springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
+
 @EnableEurekaClient
 @SpringBootApplication
-public class WxfvipbjApplication {
+public class AuthApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WxfvipbjApplication.class, args);
+		SpringApplication.run(AuthApplication.class, args);
 	}
 
 }
+

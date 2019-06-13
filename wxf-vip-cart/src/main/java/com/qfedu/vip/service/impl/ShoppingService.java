@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 @RestController
 public class ShoppingService implements IShoppingCar {
 
     @Resource
     private ShoppingMapper shoppingMapper;
+
+    private Logger logger=Logger.getLogger("购物车");
 
     @RequestMapping(value = "add",method = RequestMethod.POST)
     @Override

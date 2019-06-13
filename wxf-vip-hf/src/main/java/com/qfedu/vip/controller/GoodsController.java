@@ -5,13 +5,13 @@ import com.qfedu.vip.po.ShoppingCar;
 import com.qfedu.vip.service.IGoodsService;
 import com.qfedu.vip.vo.JsonResultVo;
 import com.qfedu.vip.vo.MerchartInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -28,9 +28,12 @@ public class GoodsController {
     @Autowired
     private RestTemplate restTemplate;
 
+    private Logger logger=Logger.getLogger("护肤品商城");
+
 
     @RequestMapping("/list")
     public String queryAllGoods(Model model) {
+        logger.info("护肤品商城入口");
         List<Goods> goodsList = goodsService.queryAllGoods();
         model.addAttribute("goods", goodsList);
         return "index";

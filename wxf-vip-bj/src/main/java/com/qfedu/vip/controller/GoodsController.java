@@ -5,7 +5,10 @@ import com.qfedu.vip.po.ShoppingCar;
 import com.qfedu.vip.service.IGoodsService;
 import com.qfedu.vip.vo.JsonResultVo;
 import com.qfedu.vip.vo.MerchartInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +31,27 @@ public class GoodsController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @RequestMapping("/list")
-    public String queryAllGoods(Model model) {
-        List<Goods> goodsList = goodsService.queryAllGoods();
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Value("${cxyservice}")
+    private String cxyserviceUrl;
+
+    private Logger logger=Logger.getLogger("保健商城");
+
+    @RequestMapping("/cxy/list")
+    public String queryAllGoods1(Model model) {
+        logger.info("程序员保健品商城入口");
+        Goods[] goods = restTemplate.getForObject(cxyserviceUrl, Goods[].class);
+        List<Goods> goodsList = Arrays.asList(goods);
+        model.addAttribute("goods", goodsList);
+        return "index";
+    }
+    @RequestMapping("/zln/list")
+    public String queryAllGoods2(Model model) {
+        logger.info("中老年保健品商城入口");
+        Goods[] goods = restTemplate.getForObject("http://zuul-server/zln/goods/list", Goods[].class);
+        List<Goods> goodsList = Arrays.asList(goods);
         model.addAttribute("goods", goodsList);
         return "index";
     }
@@ -43,24 +64,42 @@ public class GoodsController {
     }
 
     @RequestMapping("/addshopping")
+   // @HystrixCommand(fallbackMethod = "addshoppingBei")
     @ResponseBody
-    public JsonResultVo addShopping(String goodsId, String sku) {
+    public JsonResultVo addShopping(String goodsId, String sku,String token) {
 
-        ShoppingCar shoppingCar = new ShoppingCar();
-        shoppingCar.setShpGoodsId(goodsId);
-        shoppingCar.setShpGoodsNum("1");
-        shoppingCar.setShpGoodsSku(sku);
-        shoppingCar.getShpUserId("06778441");
-        shoppingCar.setShpMerchantId("69609206");
+        jmsTemplate.convertAndSend("session",token);
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String currentDate = simpleDateFormat.format(new Date());
-        shoppingCar.setShpCartId(currentDate);
+        JsonResultVo resultVo=restTemplate.getForObject("http://auth-center/auth?token="+token,JsonResultVo.class);
 
-        JsonResultVo jsonResultVo=restTemplate.postForObject("http://wfx-cart1/add",shoppingCar,JsonResultVo.class);
+        if (resultVo.getCode()==1) {
+            ShoppingCar shoppingCar = new ShoppingCar();
+            shoppingCar.setShpGoodsId(goodsId);
+            shoppingCar.setShpGoodsNum("1");
+            shoppingCar.setShpGoodsSku(sku);
+            shoppingCar.getShpUserId("06778441");
+            shoppingCar.setShpMerchantId("69609206");
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            String currentDate = simpleDateFormat.format(new Date());
+            shoppingCar.setShpCartId(currentDate);
+
+            JsonResultVo jsonResultVo = restTemplate.postForObject("http://wfx-cart1/add", shoppingCar, JsonResultVo.class);
 
 
+            return jsonResultVo;
+        }
+        resultVo.setCode(0);
+        return resultVo;
+    }
+
+    public JsonResultVo addshoppingBei(String goodsId, String sku){
+        System.out.println("---触发熔断机制-----");
+        JsonResultVo jsonResultVo=new JsonResultVo();
+        jsonResultVo.setCode(0);
+        jsonResultVo.setMsg("触发熔断机制");
         return jsonResultVo;
+
     }
 
     @RequestMapping("/shoppingList")
